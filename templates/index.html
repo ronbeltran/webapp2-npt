@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if name %}
+    <p>Hello, {{ name }}!</p>
+  {% else %}
+    <p>Append /?name=YourNameHere in the address bar.</p>
+  {% endif %}
+{% endblock %}
