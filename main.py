@@ -7,6 +7,14 @@ from webapp2_extras import jinja2
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from werkzeug.debug import DebuggedApplication
+
+DEBUG = os.environ['SERVER_SOFTWARE'].startswith('Development')
+
+class Application(webapp2.WSGIApplication):
+    def _internal_error(self, exception):
+        if self.debug: raise
+        return super(Application, self)._internal_error(exception)
 
 
 class BaseHandler(webapp2.RequestHandler):
@@ -23,12 +31,16 @@ class BaseHandler(webapp2.RequestHandler):
 class IndexHandler(BaseHandler):
 
     def get(self):
+        raise Exception('Werkzeug should handle this')
         context = {
             'name': self.request.get('name'),
         }
         self.render_template('index.html', **context)
 
 
-app = webapp2.WSGIApplication([
+app = Application([
     ('/', IndexHandler)
-], debug=True)
+], debug=DEBUG)
+
+if DEBUG:
+    app = DebuggedApplication(app, evalex=True)
