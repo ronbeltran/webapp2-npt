@@ -19,24 +19,8 @@ class CompanyMessage(messages.Message):
     updated = message_types.DateTimeField(6)
 
 
-class CompanyCollection(messages.Message):
+class CompanyListMessage(messages.Message):
     items = messages.MessageField(CompanyMessage, 1, repeated=True)
-
-
-DUMMY_COMPANIES = CompanyCollection(items=[
-    CompanyMessage(
-        name='2GO Group, Inc.',
-        symbol='2GO',
-        sector='SERVICES',
-        subsector='TRANSPORTATION SERVICES',
-    ),
-    CompanyMessage(
-        name='ABS-CBN Corporation',
-        symbol='ABS',
-        sector='SERVICES',
-        subsector='MEDIA',
-    ),
-])
 
 
 SYMBOL_RESOURCE = endpoints.ResourceContainer(
@@ -67,6 +51,7 @@ class CompaniesApi(remote.Service):
                 sector=request.sector,
                 subsector=request.subsector,
             )
+            company.put()
         return CompanyMessage(
             name=company.name,
             symbol=company.symbol,
@@ -74,11 +59,21 @@ class CompaniesApi(remote.Service):
             subsector=company.subsector,
         )
 
-    @endpoints.method(message_types.VoidMessage, CompanyCollection,
+    @endpoints.method(message_types.VoidMessage, CompanyListMessage,
                       path='company', http_method='GET',
                       name='company.list')
-    def companies_list(self, unused_request):
-        return DUMMY_COMPANIES
+    def companies_list(self, request):
+        items = []
+        companies = Company.get_all()
+        for item in companies:
+            company = CompanyMessage(
+                name=item.name,
+                symbol=item.symbol,
+                sector=item.sector,
+                subsector=item.subsector,
+            )
+            item.append(company)
+        return CompanyListMessage(items=items)
 
     @endpoints.method(SYMBOL_RESOURCE, CompanyMessage,
                       path='company/{symbol}', http_method='GET',
