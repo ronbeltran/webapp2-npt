@@ -25,5 +25,8 @@ class UserConfig(ndb.Model):
 
 class Company(ndb.Model):
     name = ndb.StringProperty()
+    symbol = ndb.StringProperty()
+    sector = ndb.StringProperty()
+    subsector = ndb.StringProperty()
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)
