@@ -49,3 +49,8 @@ class Company(ndb.Model):
             cls.symbol == symbol
         ).get()
         return company
+
+    @classmethod
+    def get_all(cls):
+        company = cls.query().fetch()
+        return company
