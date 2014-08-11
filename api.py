@@ -79,9 +79,7 @@ class CompaniesApi(remote.Service):
                       path='company/{symbol}', http_method='GET',
                       name='company.get')
     def company_get(self, request):
-        logging.info(request.symbol)
         company = Company.get_by_symbol(request.symbol)
-        logging.info(company)
         if company:
             return CompanyMessage(
                 name=company.name,
