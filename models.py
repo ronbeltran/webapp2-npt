@@ -16,7 +16,7 @@ class UserConfig(ndb.Model):
     updated = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
-    def get_by_email(self, email):
+    def get_by_email(cls, email):
         user = UserConfig.query(
             UserConfig.email == email
         ).get()
@@ -24,9 +24,16 @@ class UserConfig(ndb.Model):
 
 
 class Company(ndb.Model):
-    name = ndb.StringProperty()
-    symbol = ndb.StringProperty()
+    name = ndb.StringProperty(required=True)
+    symbol = ndb.StringProperty(required=True)
     sector = ndb.StringProperty()
     subsector = ndb.StringProperty()
     created = ndb.DateTimeProperty(auto_now_add=True)
     updated = ndb.DateTimeProperty(auto_now=True)
+
+    @classmethod
+    def get_by_symbol(cls, symbol):
+        company = cls.query(
+            cls.symbol == symbol
+        ).get()
+        return company
