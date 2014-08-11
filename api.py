@@ -83,7 +83,12 @@ class CompaniesApi(remote.Service):
         company = Company.get_by_symbol(request.symbol)
         logging.info(company)
         if company:
-            return company.to_dict()
+            return CompanyMessage(
+                name=company.name,
+                symbol=company.symbol,
+                sector=company.sector,
+                subsector=company.subsector,
+            )
         else:
             raise endpoints.NotFoundException('Company %s not found.' % (request.symbol))
 
