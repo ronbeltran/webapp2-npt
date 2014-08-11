@@ -32,7 +32,7 @@ class Company(ndb.Model):
     updated = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
-    def new(cls, name, symbol, sector, subsector put=False):
+    def new(cls, name, symbol, sector, subsector, put=False):
         company=cls(
             name=name,
             symbol=symbol,
