@@ -1,8 +1,11 @@
+import logging
 import endpoints
 
 from protorpc import messages
 from protorpc import message_types
 from protorpc import remote
+
+from models import Company as CompanyEntry
 
 package = 'companies'
 
@@ -34,12 +37,30 @@ DUMMY_COMPANIES = CompanyCollection(items=[
 ])
 
 
+SYMBOL_RESOURCE = endpoints.ResourceContainer(
+        message_types.VoidMessage,
+        symbol=messages.StringField(1))
+
+
 @endpoints.api(name='companies', version='v1')
 class CompaniesApi(remote.Service):
     @endpoints.method(message_types.VoidMessage, CompanyCollection,
-                      path='list', http_method='GET',
-                      name='company.listCompanies')
+                      path='companies', http_method='GET',
+                      name='companies.listCompanies')
     def companies_list(self, unused_request):
         return DUMMY_COMPANIES
+
+    @endpoints.method(SYMBOL_RESOURCE, Company,
+                      path='companies/{symbol}', http_method='GET',
+                      name='companies.getCompany')
+    def company_get(self, request):
+        logging.info(request.symbol)
+        company = CompanyEntry.get_by_symbol(request.symbol)
+        logging.info(company)
+        if company:
+            return company.to_dict()
+        else:
+            raise endpoints.NotFoundException('Company %s not found.' % (request.symbol))
+
 
 app = endpoints.api_server([CompaniesApi])
