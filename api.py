@@ -72,7 +72,7 @@ class CompaniesApi(remote.Service):
                 sector=item.sector,
                 subsector=item.subsector,
             )
-            item.append(company)
+            items.append(company)
         return CompanyListMessage(items=items)
 
     @endpoints.method(SYMBOL_RESOURCE, CompanyMessage,
