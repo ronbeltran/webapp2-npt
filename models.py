@@ -35,9 +35,9 @@ class Company(ndb.Model):
     def new(cls, name, symbol, sector, subsector, put=False):
         company=cls(
             name=name,
-            symbol=symbol,
-            sector=sector,
-            subsector=subsector,
+            symbol=symbol.upper(),
+            sector=sector.upper() if sector else sector,
+            subsector=subsector.upper() if subsector else subsector,
         )
         if put:
             company.put()
