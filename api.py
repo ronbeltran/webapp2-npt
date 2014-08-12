@@ -6,6 +6,7 @@ from protorpc import message_types
 from protorpc import remote
 
 from models import Company
+from decorators import oauth_required
 import config
 
 package = 'companies'
@@ -46,6 +47,7 @@ class CompaniesApi(remote.Service):
     @endpoints.method(CompanyResource, CompanyMessage,
                       path='company/create', http_method='POST',
                       name='company.create')
+    @oauth_required
     def companies_create(self, request):
         company = Company.get_by_symbol(request.symbol)
         if not company:
@@ -66,6 +68,7 @@ class CompaniesApi(remote.Service):
     @endpoints.method(message_types.VoidMessage, CompanyListMessage,
                       path='company', http_method='GET',
                       name='company.list')
+    @oauth_required
     def companies_list(self, request):
         items = []
         companies = Company.get_all()
