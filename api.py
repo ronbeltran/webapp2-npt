@@ -6,6 +6,7 @@ from protorpc import message_types
 from protorpc import remote
 
 from models import Company
+import config
 
 package = 'companies'
 
@@ -37,7 +38,10 @@ CompanyResource = endpoints.ResourceContainer(
         )
 
 
-@endpoints.api(name='companies', version='v1')
+@endpoints.api(name='companies', version='v1',
+               allowed_client_ids=[config.WEB_CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID],
+               audiences=[config.WEB_CLIENT_ID],
+               scopes=[endpoints.EMAIL_SCOPE])
 class CompaniesApi(remote.Service):
     @endpoints.method(CompanyResource, CompanyMessage,
                       path='company/create', http_method='POST',
