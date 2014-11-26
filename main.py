@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import os
 
 import webapp2
@@ -24,7 +22,7 @@ class IndexHandler(BaseHandler):
         context = {
             'name': self.request.get('name'),
         }
-        self.render_template('index.html', **context)
+        return self.render_template('index.html', **context)
 
 
 app = webapp2.WSGIApplication([

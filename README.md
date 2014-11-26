@@ -4,5 +4,3 @@ Features:
 
 - Uses Bootstrap CSS Templates
 - Uses Jinja2 templates
-- Implemented Google Cloud Endpoints sample API
-- More to come :-)
