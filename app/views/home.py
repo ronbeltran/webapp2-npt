@@ -1,4 +1,5 @@
 from app import BaseHandler
+from app.forms.users import LoginForm # dummy form
 
 
 class IndexHandler(BaseHandler):
