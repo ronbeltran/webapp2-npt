@@ -1,4 +1,4 @@
-from app.views import BaseHandler
+from app import BaseHandler
 
 
 class IndexHandler(BaseHandler):
