@@ -12,7 +12,7 @@ class BaseHandler(webapp2.RequestHandler):
     def jinja2(self):
         return jinja2.get_jinja2(app=self.app)
 
-    def render_template(self, filename, **template_args):
+    def render(self, filename, **template_args):
         self.response.write(
             self.jinja2.render_template(filename, **template_args))
 
@@ -22,7 +22,7 @@ class IndexHandler(BaseHandler):
         context = {
             'name': self.request.get('name'),
         }
-        return self.render_template('index.html', **context)
+        return self.render('index.html', **context)
 
 
 app = webapp2.WSGIApplication([
