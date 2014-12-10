@@ -7,4 +7,4 @@ class IndexHandler(BaseHandler):
         context = {
             'name': self.request.get('name'),
         }
-        return self.render('index.html', **context)
+        return self.render('index.html', context=context)
